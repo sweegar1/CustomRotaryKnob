@@ -1,9 +1,10 @@
-package com.example.musictribetask
+package com.example.musictribetask.customView
 
 import android.app.Activity
 import android.view.Gravity
 import android.widget.TextView
 import android.widget.Toast
+import com.example.musictribetask.R
 
 fun Toast.showCustomToast(message: String, activity: Activity)
 {

@@ -1,4 +1,4 @@
-package com.example.musictribetask
+package com.example.musictribetask.customView
 
 
 import android.content.Context
@@ -11,6 +11,11 @@ import android.view.MotionEvent
 import android.widget.ImageView.ScaleType
 import android.widget.RelativeLayout
 import androidx.core.view.GestureDetectorCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.get
+import com.example.musictribetask.R
+import com.example.musictribetask.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.rotary_knob_view.view.*
 import kotlin.math.atan2
 
@@ -21,15 +26,13 @@ class RotaryKnobView @JvmOverloads constructor(
     private val gestureDetector: GestureDetectorCompat
     private var maxValue = 99
     private var minValue = 0
-    var listener: RotaryKnobListener? = null
     var value = 130
     private var knobDrawable: Drawable? = null
     private var divider = 300f / (maxValue - minValue)
 
-    interface RotaryKnobListener {
-        fun onRotate(value: Int)
+    private val viewModel by lazy {
+        ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!).get<MainViewModel>()
     }
-
     init {
         this.maxValue = maxValue + 1
 
@@ -74,7 +77,8 @@ class RotaryKnobView @JvmOverloads constructor(
             // range to 0 - 300
             val valueRangeDegrees = rotationDegrees + 150
             value = ((valueRangeDegrees / divider) + minValue).toInt()
-            if (listener != null) listener!!.onRotate(value)
+            viewModel.knobValue.value=value.toString()
+
         }
         return true
     }

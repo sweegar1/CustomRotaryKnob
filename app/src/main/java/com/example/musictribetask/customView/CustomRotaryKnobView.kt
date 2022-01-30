@@ -1,4 +1,4 @@
-package com.example.musictribetask
+package com.example.musictribetask.customView
 
 import android.content.Context
 import android.graphics.Matrix
@@ -10,6 +10,11 @@ import android.view.MotionEvent
 import android.widget.ImageView.ScaleType
 import android.widget.RelativeLayout
 import androidx.core.view.GestureDetectorCompat
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.get
+import com.example.musictribetask.R
+import com.example.musictribetask.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.rotary_knob_view.view.*
 import kotlin.math.atan2
 
@@ -20,15 +25,14 @@ class CustomRotaryKnobView @JvmOverloads constructor(
     private val gestureDetector: GestureDetectorCompat
     private var maxValue = 99
     private var minValue = 0
-    var customListener: CustomRotaryKnobListener? = null
     var value = 130
     private var knobDrawable: Drawable? = null
     private var divider = 300f / (maxValue - minValue)
 
-    interface CustomRotaryKnobListener {
-        fun onRotation(value: String)
-    }
 
+    private val viewModel by lazy {
+        ViewModelProvider(ViewTreeViewModelStoreOwner.get(this)!!).get<MainViewModel>()
+    }
     init {
         this.maxValue = maxValue + 1
 
@@ -65,46 +69,51 @@ class CustomRotaryKnobView @JvmOverloads constructor(
 
         val rotationDegrees = calculateAngle(e2.x, e2.y)
         // use only -150 to 150 range (knob min/max points
+        var knobPosition:Float=0F
+        var rotationvalue:String ="0"
         if (rotationDegrees >= -150 && rotationDegrees <= 150) {
+
             if( rotationDegrees>18.75 && rotationDegrees<=56.25 ){
-                setKnobPosition(36F)
-                if (customListener != null) customListener!!.onRotation("4/3")
+                knobPosition=36F
+                rotationvalue="4/3"
 
             }else if( rotationDegrees>56.25 && rotationDegrees<=93.75 ){
-                setKnobPosition(72F)
-                if (customListener != null) customListener!!.onRotation("3/2")
+                knobPosition=72F
+                rotationvalue="3/2"
             }else if( rotationDegrees>93.75 && rotationDegrees<=131.25 ){
-                setKnobPosition(108F)
-                if (customListener != null) customListener!!.onRotation("2")
+                knobPosition=108F
+                rotationvalue="2"
 
             }else if( rotationDegrees>131.25 && rotationDegrees<=150 ){
-                setKnobPosition(150F)
-                if (customListener != null) customListener!!.onRotation("3")
+                knobPosition=150F
+                rotationvalue="3"
             }
             else if( rotationDegrees<-18.75 && rotationDegrees>=-56.25 ){
-                setKnobPosition(-36F)
-                if (customListener != null) customListener!!.onRotation("2/3")
+                knobPosition=-36F
+                rotationvalue="2/3"
 
             }else if( rotationDegrees<-56.25 && rotationDegrees>=-93.75 ){
-                setKnobPosition(-72F)
-                if (customListener != null) customListener!!.onRotation("1/2")
+                knobPosition=-72F
+                rotationvalue="1/2"
             }else if( rotationDegrees<-93.75 && rotationDegrees>=-131.25 ){
-                setKnobPosition(-108F)
-                if (customListener != null) customListener!!.onRotation("3/8")
+                knobPosition=-108F
+                rotationvalue="3/8"
 
             }else if( rotationDegrees<-131.25 && rotationDegrees>=-150 ){
-                setKnobPosition(-150F)
-                if (customListener != null) customListener!!.onRotation("1/4")
+                knobPosition=-150F
+                rotationvalue="1/4"
             }
             else{
-            setKnobPosition(0F)
+                knobPosition=0F
                 // Calculate rotary value
                 // The range is the 300 degrees between -150 and 150, so we'll add 150 to adjust the
                 // range to 0 - 300
                 val valueRangeDegrees = rotationDegrees + 150
                 value = ((valueRangeDegrees / divider) + minValue).toInt()
-                if (customListener != null) customListener!!.onRotation("1")
+                rotationvalue="1"
             }
+            setKnobPosition(knobPosition)
+            viewModel.knobValue2.value=rotationvalue
 
 
         }

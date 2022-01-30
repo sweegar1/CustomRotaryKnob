@@ -9,19 +9,19 @@
     android:background="#DFCAA0"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".view.MainActivity">
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="TextView"
+        android:text="@string/_0_ms"
         android:textSize="24sp" />
 
-    <com.example.musictribetask.RotaryKnobView
+    <com.example.musictribetask.customView.RotaryKnobView
         android:id="@+id/knob"
-        class="com.example.musictribetask.RotaryKnobView"
+        class="com.example.musictribetask.customView.RotaryKnobView"
         android:layout_width="@dimen/knob_width"
         android:layout_height="@dimen/knob_height"
         android:layout_marginBottom="100dp"
@@ -35,15 +35,15 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:text="@string/_0_ms"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.musictribetask.CustomRotaryKnobView
+    <com.example.musictribetask.customView.CustomRotaryKnobView
         android:id="@+id/knob2"
-        class="com.example.musictribetask.CustomRotaryKnobView"
+        class="com.example.musictribetask.customView.CustomRotaryKnobView"
         android:layout_width="@dimen/knob_width"
         android:layout_height="@dimen/knob_height"
         android:layout_marginBottom="312dp"
